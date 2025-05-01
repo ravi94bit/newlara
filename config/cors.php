@@ -6,7 +6,7 @@ return [
 
     'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
 
-    'allowed_origins' => ['http://localhost:3000'], // Allow requests from localhost:3000 (React)
+    'allowed_origins' => ['http://localhost:3000', 'http://localhost:5173'], // Allow requests from localhost:3000 (React)
 
     'allowed_origins_patterns' => [],
 
