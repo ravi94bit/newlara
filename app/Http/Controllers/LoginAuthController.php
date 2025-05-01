@@ -20,7 +20,7 @@ class LoginAuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed', // password_confirmation should be included in the form data
         ]);
     
         // If validation fails, return error messages
@@ -37,9 +37,10 @@ class LoginAuthController extends Controller
     
         // Return user data in the response
         return response()->json([
+            'status' => 200,
             'message' => 'User registered successfully',
             'user' => $user
-        ], 201);
+        ], 200); 
     }
     
 

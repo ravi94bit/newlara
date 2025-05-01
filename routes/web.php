@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\studentController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [TestController::class, 'index'])->name('test.index');
+Route::get('/profiles', [TestController::class, 'view'])->name('test.view');
 Route::post('/test',[TestController::class, 'store'])->name('test.store');
+
+Route::get('/student', [studentController::class, 'index'])->name('student.index');
+Route::get('/student/view', [studentController::class, 'view'])->name('student.view');
+Route::post('/student/store', [studentController::class, 'store'])->name('student.store');

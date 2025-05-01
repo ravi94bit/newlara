@@ -52,41 +52,94 @@
             </div>
         </div>
 
+        <div class="mt-5">
+            <h2 class="text-center mb-4">Submitted Profiles</h2>
+            <table class="table table-bordered table-striped" id="profileTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- New rows will be appended here -->
+                </tbody>
+            </table>
+        </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $('#profileForm').on('submit', function(e){
-            e.preventDefault();
+    $(document).ready(function() {
+        fetchProfiles();
+        // Handle form submission
+        function fetchProfiles() {
+            $.ajax({
+                url: "{{ route('test.view') }}",
+                type: "GET",
+                success: function(data) {
+                    let rows = '';
+                    data.forEach(function(profile) {
+                        rows += `<tr>
+                                    <td>${profile.name}</td>
+                                    <td>${profile.email}</td>
+                                    <td>${profile.phone}</td>
+                                    <td>${profile.address}</td>
+                                  </tr>`;
+                    });
+                    $('#profileTable tbody').html(rows);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+           
 
+
+
+
+
+        $('#profileForm').on('submit', function(e) {
+            e.preventDefault();
+    
             let formData = {
                 name: $('#name').val(),
                 email: $('#email').val(),
                 phone: $('#phone').val(),
                 address: $('#address').val(),
-                token: '{{ csrf_token() }}'
-            }
-
+                _token: '{{ csrf_token() }}'
+            };
+    
             $.ajax({
-                url: "{{ route('test.store')}}"    
+                url: "{{ route('test.store') }}",    
                 type: "POST",
                 data: formData,
-                sucess: function(response) {
-                    alert('sucessfully store')
+                success: function(response) {
+    
+                    // Add the new data to the table
+                    let newRow = `<tr>
+                                    <td>${formData.name}</td>
+                                    <td>${formData.email}</td>
+                                    <td>${formData.phone}</td>
+                                    <td>${formData.address}</td>
+                                  </tr>`;
+                    $('#profileTable tbody').append(newRow);
+    
+                    // Reset the form
                     $('#profileForm')[0].reset();
-                }
+                },
                 error: function(xhr) {
                     alert('Something went wrong!');
                     console.error(xhr.responseText);
                 }
             });
-        })
-
+        });
     });
-
-
-</script>
+    </script>
 </body>
 </html>
