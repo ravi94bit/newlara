@@ -25,6 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('posts', PostController::class);
 Route::post('/register', [LoginAuthController::class, 'register']);
 Route::post('/login', [LoginAuthController::class, 'login']);
+Route::post('/forgot-password', [LoginAuthController::class, 'forgetPassword']);
+Route::post('/reset-password', [LoginAuthController::class, 'resetPassword']);
+Route::get('/reset-password/{token}', function ($token) {
+    return response()->json(['token' => $token]);
+})->name('password.reset');
 Route::middleware('auth:sanctum')->post('/logout', [LoginAuthController::class, 'logout']);
 
 
